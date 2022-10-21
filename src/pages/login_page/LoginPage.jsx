@@ -1,4 +1,4 @@
-import { Button, Checkbox, Form, Input } from 'antd';
+import { Button, Form, Input } from 'antd';
 import 'antd/dist/antd.min.css'
 import Cookies from 'universal-cookie';
 import React, { useState } from 'react';
@@ -42,7 +42,7 @@ function LoginPage(props) {
                   })
                   setTimeout(function(){
                     navigate('/home');
-                    //window.location.reload();
+                    window.location.reload();
                  }, 1500);
                   
                   

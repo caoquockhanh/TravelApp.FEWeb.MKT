@@ -26,7 +26,7 @@ function LogoutPage(props) {
                 timer: 1500
               })
               setTimeout(function(){
-                navigate("/login");
+                navigate("/");
              }, 1500);
         })
         .catch(function (error) {

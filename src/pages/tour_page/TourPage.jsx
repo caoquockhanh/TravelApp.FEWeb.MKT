@@ -1,6 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { ExclamationCircleOutlined } from '@ant-design/icons';
-import { Space, Table, Button, Spin, Modal, Form, Input, Select } from 'antd';
+import {
+    ExclamationCircleOutlined,
+    UploadOutlined,
+} from '@ant-design/icons';
+import {
+    Space,
+    Table,
+    Button,
+    Spin,
+    Modal,
+    Form,
+    Input,
+    Select,
+    Upload,
+    message,
+} from 'antd';
+import $ from 'jquery';
 import Cookies from 'universal-cookie';
 import './css/TourPage.css';
 
@@ -22,7 +37,26 @@ function TourPage() {
         }, 500)
     }, [])
 
-    //API get list tour
+    //Xử lí Image
+    const props = {
+        name: 'file',
+        action: 'http://localhost:8080/api/tours/image?id=635a5e89e06d4c41bda54180',
+        headers: {
+            authorization: 'authorization-text',
+        },
+        onChange(info) {
+            if (info.file.status !== 'uploading') {
+                console.log(info.file, info.fileList);
+            }
+            if (info.file.status === 'done') {
+                message.success(`${info.file.name} file uploaded successfully`);
+            } else if (info.file.status === 'error') {
+                message.error(`${info.file.name} file upload failed.`);
+            }
+        },
+    };
+
+    //API get list tour (Hiển thị danh sách các Tour)
     var axios = require('axios');
     var config = {
         method: 'get',
@@ -49,15 +83,20 @@ function TourPage() {
     //Lưu id Tour
     const [uid, setUid] = useState('');
 
+    const [uid1, setUid1] = useState('');
+
     const [visible, setVisible] = useState(false);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const [modal1Open, setModal1Open] = useState(false);
 
     //Modal thêm Tour
     const [form] = Form.useForm();
     const [form1] = Form.useForm();
     const showModal = () => {
         setVisible(true)
+        setIsModalOpen(false)
     }
     const handleOk = () => {
         console.log("Ok");
@@ -106,28 +145,50 @@ function TourPage() {
         axios(config)
             .then(function (response) {
                 //console.log(response.data);
-                // Swal.fire({
-                //     icon: 'success',
-                //     title: 'Thêm Tour thành công!',
-                //     showConfirmButton: false,
-                //     timer: 1500
-                // })
-                // setTimeout(function () {
-                //     setVisible(false)
-                //     form.resetFields()
-                // }, 1400);
-                setVisible(false)
-                form.resetFields()
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thêm Tour thành công!',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                setTimeout(function () {
+                    setVisible(false)
+                    form.resetFields()
+                }, 1400);
             })
             .catch(function (error) {
-                //console.log(error);
-                // Swal.fire({
-                //     icon: 'error',
-                //     title: 'Thêm thất bại',
-                //     text: error.message,
-                // })
-                setVisible(false)
+                console.log(error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Thêm thất bại',
+                    text: error.message,
+                })
+                setVisible(true)
                 form.resetFields()
+            });
+    }
+
+    //Event show Image Upload
+    const viewPicture = (record) => {
+        console.log(record.id);
+        setModal1Open(true)
+
+        //
+        var config = {
+            method: 'get',
+            url: 'http://localhost:8080/api/tours/image?id=' + record.id,
+            headers: {
+                'accept': 'image/jpeg',
+                'Authorization': 'Bearer ' + token,
+            }
+        };
+
+        axios(config)
+            .then(function (response) {
+                //console.log(response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
             });
     }
 
@@ -136,7 +197,7 @@ function TourPage() {
         setIsModalOpen(true);
         //API get one Tour
         var axios = require('axios');
-
+        var loai;
         var config = {
             method: 'get',
             url: 'http://localhost:8080/api/tours/' + record.id,
@@ -148,9 +209,14 @@ function TourPage() {
 
         axios(config)
             .then(function (response) {
-                //console.log(response.data.id);
+                //console.log(response.data);
                 //Lấy id Tour lưu vào state khi Click
                 setUid(response.data.id);
+                var res = response.data.types;
+                $.each(res, (i) => {
+                    loai = res[i].id;
+                    //console.log(loai);
+                })
                 form1.setFieldsValue({
                     tourName1: response.data.tourName,
                     introduce1: response.data.introduce,
@@ -159,7 +225,7 @@ function TourPage() {
                     phone1: response.data.phone,
                     tourTime1: response.data.tourTime,
                     basePrice1: response.data.basePrice,
-                    // type1: response.data.type,
+                    types1: loai,
                 });
             })
             .catch(function (error) {
@@ -170,7 +236,6 @@ function TourPage() {
     }
     //Event handle Update Tour
     const handleSubmit1 = (values) => {
-        //console.log(values);
         //API sửa Tour
         var axios = require('axios');
         var data = JSON.stringify({
@@ -183,7 +248,9 @@ function TourPage() {
             "tourPlan": values.tourPlan1,
             "tourTime": values.tourTime1,
             "types": [
-                values.type1,
+                {
+                    "id": values.types1
+                }
             ]
         });
 
@@ -304,12 +371,7 @@ function TourPage() {
                         <Form.Item
                             label="Tên Tour"
                             name="tourName"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Vui lòng nhập tên Tour!',
-                                },
-                            ]}
+
                         >
                             <Input />
                         </Form.Item>
@@ -317,12 +379,7 @@ function TourPage() {
                         <Form.Item
                             label="Introduce"
                             name="introduce"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Vui lòng nhập Introduce!',
-                                },
-                            ]}
+
                         >
                             <Input />
                         </Form.Item>
@@ -330,12 +387,7 @@ function TourPage() {
                         <Form.Item
                             label="Rating"
                             name="rating"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Vui lòng nhập Rating!',
-                                },
-                            ]}
+
                         >
                             <Input />
                         </Form.Item>
@@ -343,12 +395,7 @@ function TourPage() {
                         <Form.Item
                             label="Tour Plan"
                             name="tourPlan"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Vui lòng nhập Tour Plan!',
-                                },
-                            ]}
+
                         >
                             <Input />
                         </Form.Item>
@@ -356,12 +403,7 @@ function TourPage() {
                         <Form.Item
                             label="Phone"
                             name="phone"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Vui lòng nhập Phone!',
-                                },
-                            ]}
+
                         >
                             <Input />
                         </Form.Item>
@@ -369,12 +411,7 @@ function TourPage() {
                         <Form.Item
                             label="Tour Time"
                             name="tourTime"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Vui lòng nhập Tour Time!',
-                                },
-                            ]}
+
                         >
                             <Input />
                         </Form.Item>
@@ -382,12 +419,7 @@ function TourPage() {
                         <Form.Item
                             label="Type"
                             name="types"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Vui lòng chọn Types!',
-                                },
-                            ]}
+
                         >
                             <Select defaultValue="Vui lòng chọn...">
                                 <Option value="mount">Núi</Option>
@@ -400,12 +432,7 @@ function TourPage() {
                         <Form.Item
                             label="Base Price"
                             name="basePrice"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Vui lòng nhập Base Price!',
-                                },
-                            ]}
+
                         >
                             <Input maxLength={16} />
                         </Form.Item>
@@ -526,10 +553,10 @@ function TourPage() {
                             ]}
                         >
                             <Select defaultValue="Vui lòng chọn...">
-                                <Option value="mount">Núi</Option>
-                                <Option value="nature">Thiên nhiên</Option>
-                                <Option value="sea">Biển</Option>
-                                <Option value="normal">Bình thường</Option>
+                                <Option value="635a0274843f5bf7652e4ebc">Núi</Option>
+                                <Option value="635a02a4843f5bf7652e4ebd">Thiên nhiên</Option>
+                                <Option value="635a02b3843f5bf7652e4ebe">Biển</Option>
+                                <Option value="635a02cf843f5bf7652e4ebf">Bình thường</Option>
                             </Select>
                         </Form.Item>
 
@@ -558,6 +585,20 @@ function TourPage() {
                         </div>
                     </Form>
                 </Modal>
+                {/* Modal cập nhật Image */}
+                <Modal
+                    title="Ảnh"
+                    style={{
+                        top: 20,
+                    }}
+                    visible={modal1Open}
+                    onOk={() => setModal1Open(false)}
+                    onCancel={() => setModal1Open(false)}
+                >
+                    <Upload {...props}>
+                        <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                    </Upload>
+                </Modal>
                 {/* Hiển thị bảng chứa các Tour */}
                 <Table dataSource={dataSource} loading={loading ? <Spin /> : { indicator: <Spin />, spinning: false }}>
                     <Column title="Tên Tour" dataIndex="tourName" key="tourName" />
@@ -573,7 +614,7 @@ function TourPage() {
                         key="action"
                         render={(_, record) => (
                             <Space size="middle">
-                                <Button primary>Xem ảnh</Button>
+                                <Button primary onClick={() => { viewPicture(record) }}>Xem ảnh</Button>
                                 <Button style={{ borderColor: "#FF884B", color: '#FF884B' }} onClick={() => { editTour(record) }}>Sửa</Button>
                                 <Button danger onClick={() => { showDeleteConfirm(record) }}>Xóa</Button>
                             </Space>

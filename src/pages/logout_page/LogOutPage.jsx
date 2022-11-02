@@ -1,11 +1,14 @@
 import React from "react";
 import { useNavigate } from 'react-router-dom'
+import Cookies from 'universal-cookie'
 
 function LogoutPage(props) {
 
     const navigate = useNavigate();
 
     var axios = require('axios');
+
+    const cookies = new Cookies();
 
     const Swal = require('sweetalert2')
 
@@ -18,6 +21,7 @@ function LogoutPage(props) {
     axios(config)
         .then(function (response) {
             console.log(JSON.stringify(response.data));
+            cookies.set('token',"", { path: '/' });
             Swal.fire({
                 position: 'top-end',
                 icon: 'success',

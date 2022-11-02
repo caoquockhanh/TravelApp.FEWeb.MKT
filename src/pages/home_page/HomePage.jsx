@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import Cookies from 'universal-cookie';
 import "./css/homepage.css"
 import $ from 'jquery';
-import LayoutPage from '../layout_page/LayoutPage';
 
 const cookies = new Cookies();
 const token = cookies.get('token');

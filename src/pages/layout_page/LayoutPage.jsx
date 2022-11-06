@@ -7,7 +7,7 @@ import {
 import { Breadcrumb, Layout, Menu } from 'antd';
 import React, { useState } from 'react';
 import 'antd/dist/antd.css'
-import {  Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import LoginPage from '../login_page/LoginPage';
 import HomePage from '../home_page/HomePage';
 import LogoutPage from '../logout_page/LogOutPage';
@@ -56,35 +56,45 @@ function LayoutPage() {
     else {
         console.log(location.pathname + "|false");
     }
+    // if(location.pathname === "/account"){
+    //     console.log('Tài khoản');
+    // }
 
     const navigate = useNavigate();
 
     const [collapsed, setCollapsed] = useState(false);
 
+    const [itemname, setItemName] = useState('');
+    const [itemname1, setItemName1] = useState('');
+
     return (
         <>
-            {location.pathname === "/" ?
+            {location.pathname === "/"
+                ?
                 <LoginPage></LoginPage>
-
-                : <Layout style={{ minHeight: '100vh' }}>
+                :
+                <Layout style={{ minHeight: '100vh' }}>
                     <Sider collapsible collapsed={collapsed} onCollapse={value => setCollapsed(value)}>
                         <div className="logo" />
-                        <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} onClick={({ key }) => {
+                        <Menu theme='dark' defaultSelectedKeys={['1']} mode="inline" items={items} onClick={({ key }) => {
                             if (key === 'logout') {
                                 // navigate('/login');
                             } else {
-                                //setItemName(items.find((elm) => elm.key === key).label);
-                                console.log(key);
+                                //console.log(key);
                                 navigate(key);
+                                if(key === '/account')
+                                {
+                                    setItemName('Tài khoản')
+                                }
+                                setItemName(items.find((elm) => elm.key === key).label);
                             }
-
                         }} />
                     </Sider>
                     <Layout className="site-layout">
                         <Header className="site-layout-background" style={{ padding: 0 }} />
-                        <Content style={{ margin: '0 16px', height:'auto' }}>
+                        <Content style={{ margin: '0 16px', height: 'auto' }}>
                             <Breadcrumb style={{ margin: '16px 0' }}>
-                                <Breadcrumb.Item>Trang chủ</Breadcrumb.Item>
+                                <Breadcrumb.Item>{itemname}</Breadcrumb.Item>
                             </Breadcrumb>
                             <div className="site-layout-background" style={{ padding: 24, minHeight: 570 }}>
                                 <Routes>

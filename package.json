@@ -21,6 +21,11 @@
     "universal-cookie": "^4.0.4",
     "web-vitals": "^2.1.4"
   },
+  "browser": {
+    "fs": false,
+     "path": false,
+     "os": false
+ },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

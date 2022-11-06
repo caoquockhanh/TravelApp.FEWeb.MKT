@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
     ExclamationCircleOutlined,
-    UploadOutlined,
 } from '@ant-design/icons';
 import {
     Space,
@@ -12,8 +11,7 @@ import {
     Form,
     Input,
     Select,
-    Upload,
-    message,
+    Image,
 } from 'antd';
 import $ from 'jquery';
 import Cookies from 'universal-cookie';
@@ -23,6 +21,8 @@ const cookies = new Cookies();
 const token = cookies.get('token');
 
 const { Option } = Select;
+
+const { TextArea } = Input;
 
 function TourPage() {
 
@@ -37,25 +37,6 @@ function TourPage() {
         }, 500)
     }, [])
 
-    //Xử lí Image
-    const props = {
-        name: 'file',
-        action: 'http://localhost:8080/api/tours/image?id=635a5e89e06d4c41bda54180',
-        headers: {
-            authorization: 'authorization-text',
-        },
-        onChange(info) {
-            if (info.file.status !== 'uploading') {
-                console.log(info.file, info.fileList);
-            }
-            if (info.file.status === 'done') {
-                message.success(`${info.file.name} file uploaded successfully`);
-            } else if (info.file.status === 'error') {
-                message.error(`${info.file.name} file upload failed.`);
-            }
-        },
-    };
-
     //API get list tour (Hiển thị danh sách các Tour)
     var axios = require('axios');
     var config = {
@@ -68,7 +49,7 @@ function TourPage() {
     //setLoading(true);
     axios(config)
         .then(function (response) {
-            //console.log(response.data);
+            console.log(response.data);
             setDataSource(response.data);
             setLoading(false)
         })
@@ -125,7 +106,7 @@ function TourPage() {
             "rating": values.rating,
             "tourName": values.tourName,
             "tourPlan": values.tourPlan,
-            "tourTime": values.tourTime,
+            "tourPlace": values.tourPlace,
             "types": [
                 values.types
             ]
@@ -169,10 +150,12 @@ function TourPage() {
     }
 
     //Event show Image Upload
+    const [previewImage, setPreviewImage] = useState('');
     const viewPicture = (record) => {
-        console.log(record.id);
+        //console.log(record.id);
+        setUid1(record.id)
         setModal1Open(true)
-
+        setPreviewImage('http://localhost:8080/api/tours/image?id=' + record.id)
         //
         var config = {
             method: 'get',
@@ -185,7 +168,7 @@ function TourPage() {
 
         axios(config)
             .then(function (response) {
-                //console.log(response.data);
+                console.log(response);
             })
             .catch(function (error) {
                 console.log(error);
@@ -193,6 +176,7 @@ function TourPage() {
     }
 
     //Button edit Tour
+    const [banner, setBanner] = useState('');
     const editTour = (record) => {
         setIsModalOpen(true);
         //API get one Tour
@@ -209,9 +193,11 @@ function TourPage() {
 
         axios(config)
             .then(function (response) {
-                //console.log(response.data);
+                console.log(response.data);
                 //Lấy id Tour lưu vào state khi Click
                 setUid(response.data.id);
+                setBanner(response.data.banner)
+                console.log(banner);
                 var res = response.data.types;
                 $.each(res, (i) => {
                     loai = res[i].id;
@@ -223,7 +209,7 @@ function TourPage() {
                     rating1: response.data.rating,
                     tourPlan1: response.data.tourPlan,
                     phone1: response.data.phone,
-                    tourTime1: response.data.tourTime,
+                    tourPlace1: response.data.tourPlace,
                     basePrice1: response.data.basePrice,
                     types1: loai,
                 });
@@ -239,14 +225,13 @@ function TourPage() {
         //API sửa Tour
         var axios = require('axios');
         var data = JSON.stringify({
-            "banner": "string",
             "basePrice": values.basePrice1,
             "introduce": values.introduce1,
             "phone": values.phone1,
             "rating": values.rating1,
             "tourName": values.tourName1,
             "tourPlan": values.tourPlan1,
-            "tourTime": values.tourTime1,
+            "tourPlace": values.tourPlace1,
             "types": [
                 {
                     "id": values.types1
@@ -267,7 +252,7 @@ function TourPage() {
 
         axios(config)
             .then(function (response) {
-                //console.log(response.data);
+                console.log(response.data);
                 Swal.fire({
                     icon: 'success',
                     title: 'Cập nhật Tour thành công!',
@@ -348,6 +333,17 @@ function TourPage() {
         />
     );
 
+    //Image
+    const [image, setImage] = useState('');
+    const handleImage = (e) => {
+        console.log(e.target.files);
+        setImage(e.target.files[0])
+    }
+
+    const handleApi = () => {
+
+    }
+
     return (
         <>
             <div style={{ width: '100%' }}>
@@ -409,11 +405,11 @@ function TourPage() {
                         </Form.Item>
 
                         <Form.Item
-                            label="Tour Time"
-                            name="tourTime"
+                            label="Tour Place"
+                            name="tourPlace"
 
                         >
-                            <Input />
+                            <TextArea rows={4} />
                         </Form.Item>
 
                         <Form.Item
@@ -530,8 +526,8 @@ function TourPage() {
                         </Form.Item>
 
                         <Form.Item
-                            label="Tour Time"
-                            name="tourTime1"
+                            label="Tour Place"
+                            name="tourPlace1"
                             rules={[
                                 {
                                     required: false,
@@ -539,7 +535,7 @@ function TourPage() {
                                 },
                             ]}
                         >
-                            <Input />
+                            <TextArea rows={4} />
                         </Form.Item>
 
                         <Form.Item
@@ -595,9 +591,19 @@ function TourPage() {
                     onOk={() => setModal1Open(false)}
                     onCancel={() => setModal1Open(false)}
                 >
-                    <Upload {...props}>
-                        <Button icon={<UploadOutlined />}>Click to Upload</Button>
-                    </Upload>
+
+                    <input type="file" onChange={handleImage} />
+                    <br />
+                    <br />
+                    <button name="upload" onClick={handleApi}>
+                        Upload
+                    </button>
+
+                    <br />
+                    <Image
+                        width={200}
+                        src={previewImage}
+                    />
                 </Modal>
                 {/* Hiển thị bảng chứa các Tour */}
                 <Table dataSource={dataSource} loading={loading ? <Spin /> : { indicator: <Spin />, spinning: false }}>
@@ -606,7 +612,7 @@ function TourPage() {
                     <Column title="Rating" dataIndex="rating" key="rating" />
                     <Column title="Tour Plan" dataIndex="tourPlan" key="tourPlan" />
                     <Column title="Phone" dataIndex="phone" key="phone" />
-                    <Column title="Tour Time" dataIndex="tourTime" key="tourTime" />
+                    <Column title="Tour Place" dataIndex="tourPlace" key="tourPlace" />
                     <Column title="Base Price" dataIndex="basePrice" key="basePrice" />
 
                     <Column

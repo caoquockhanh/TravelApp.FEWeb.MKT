@@ -4,7 +4,7 @@ import {
     MenuOutlined,
     ToolOutlined,
 } from '@ant-design/icons'
-import { Breadcrumb, Layout, Menu } from 'antd';
+import { Breadcrumb, Layout, Menu, message } from 'antd';
 import React, { useState } from 'react';
 import 'antd/dist/antd.css'
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
@@ -87,6 +87,10 @@ function LayoutPage() {
                                     setItemName('Tài khoản')
                                 }
                                 setItemName(items.find((elm) => elm.key === key).label);
+                                if(key === '/user')
+                                {
+                                    message.error('Chức năng đang được xây dựng!');
+                                }
                             }
                         }} />
                     </Sider>

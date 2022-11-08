@@ -641,7 +641,7 @@ function TourPage() {
                         onFinishFailed={onFinishFailed}
                         autoComplete="off"
                     >
-                        <h4>Vui lòng chọn ảnh</h4>
+                        <h4>Vui lòng chọn Banner</h4>
                         <Form.Item
                             name="image"
                             style={{ width: '100%' }}
@@ -674,7 +674,7 @@ function TourPage() {
                 </Modal>
                 {/* Hiển thị bảng chứa các Tour */}
                 <Table dataSource={dataSource} loading={loading ? <Spin /> : { indicator: <Spin />, spinning: false }}>
-                    <Column title="Tên Tour" dataIndex="tourName" key="tourName" />
+                    <Column title="Tour Name" dataIndex="tourName" key="tourName" />
                     <Column title="Introduce" dataIndex="introduce" key="introduce" />
                     <Column title="Rating" dataIndex="rating" key="rating" />
                     <Column title="Tour Plan" dataIndex="tourPlan" key="tourPlan" />

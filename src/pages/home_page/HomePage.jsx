@@ -1,52 +1,87 @@
-import React, { useState } from 'react';
-import Cookies from 'universal-cookie';
+import React from 'react';
 import "./css/homepage.css"
-import $ from 'jquery';
+import { Card, Avatar, message } from 'antd';
+import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
 
-const cookies = new Cookies();
-const token = cookies.get('token');
-
+const { Meta } = Card;
 
 function HomePage() {
 
-  const [text, setText] = useState('');
-
-  var res;
-
-
-  //API get list tour
-  var axios = require('axios');
-
-  var config = {
-    method: 'get',
-    url: 'http://localhost:8080/api/tours',
-    headers: {
-      'Authorization': 'Bearer ' + token
-    }
+  const error = () => {
+    message.error('Chức năng đang được xây dựng!');
   };
 
-  axios(config)
-    .then(function (response) {
-      res = response.data;
-      $.each(res, (i) => {
-        setText(res[i].phone);
-      })
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-
   return (
- 
-     <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
-      <form>
-        <input
-          value={text}
-        />
-        <p>{text}</p>
-      </form>
+    <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
+      <div className='banner' style={{ display: 'flex', justifyContent: 'center', fontSize: '3vh' }}>
+        <h1 style={{ color: '#6C4AB6', paddingBottom: '10px' }}>Chào các bạn đây là trang Admin Web quản lí Tour của nhóm MKT</h1>
+      </div>
+      <h2 style={{ color: '#3F3B6C' }}>Thành viên nhóm gồm: </h2>
+      <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
+        <Card
+          style={{ width: 300 }}
+          cover={
+            <img
+              alt="example"
+              src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+            />
+          }
+          actions={[
+            <SettingOutlined key="setting" onClick={error}/>,
+            <EditOutlined key="edit" onClick={error}/>,
+            <EllipsisOutlined key="ellipsis" />,
+          ]}
+        >
+          <Meta
+            avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
+            title="Bùi Hữu Thông"
+            description="Chức vụ: Leader"
+          />
+        </Card>
+
+        <Card
+          style={{ width: 300 }}
+          cover={
+            <img
+              alt="example"
+              src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+            />
+          }
+          actions={[
+            <SettingOutlined key="setting" onClick={error}/>,
+            <EditOutlined key="edit" onClick={error}/>,
+            <EllipsisOutlined key="ellipsis" />,
+          ]}
+        >
+          <Meta
+            avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
+            title="Cao Quốc Khánh"
+            description="Chức vụ: Dev"
+          />
+        </Card>
+
+        <Card
+          style={{ width: 300 }}
+          cover={
+            <img
+              alt="example"
+              src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+            />
+          }
+          actions={[
+            <SettingOutlined key="setting" onClick={error}/>,
+            <EditOutlined key="edit" onClick={error}/>,
+            <EllipsisOutlined key="ellipsis" />,
+          ]}
+        >
+          <Meta
+            avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
+            title="Trần Công Minh"
+            description="Chức vụ: Dev"
+          />
+        </Card>
+      </div>
     </div>
- 
   )
 };
 

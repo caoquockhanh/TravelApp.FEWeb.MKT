@@ -23,9 +23,9 @@
   },
   "browser": {
     "fs": false,
-     "path": false,
-     "os": false
- },
+    "path": false,
+    "os": false
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

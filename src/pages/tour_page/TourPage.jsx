@@ -49,7 +49,7 @@ function TourPage() {
     //setLoading(true);
     axios(config)
         .then(function (response) {
-            console.log(response.data);
+            //console.log(response.data);
             setDataSource(response.data);
             setLoading(false)
         })
@@ -74,10 +74,11 @@ function TourPage() {
 
     //Modal thêm Tour
     const [form] = Form.useForm();
+
     const [form1] = Form.useForm();
+
     const showModal = () => {
         setVisible(true)
-        setIsModalOpen(false)
     }
     const handleOk = () => {
         console.log("Ok");
@@ -85,18 +86,19 @@ function TourPage() {
     const handleCancel = () => {
         setVisible(false)
         setIsModalOpen(false)
-        form.resetFields()
+        setModal1Open(false)
+        form.resetFields();
     };
 
     const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
         setVisible(true)
-        setIsModalOpen(true)
+        //setIsModalOpen(true)
     };
 
     //API thêm Tour
     const handleSubmit = (values) => {
-        console.log(values)
+        //console.log(values)
         var axios = require('axios');
         var data = JSON.stringify({
             "banner": "string",
@@ -168,7 +170,8 @@ function TourPage() {
 
         axios(config)
             .then(function (response) {
-                console.log(response);
+                //console.log(response);
+                form.resetFields()
             })
             .catch(function (error) {
                 console.log(error);
@@ -176,8 +179,8 @@ function TourPage() {
     }
 
     //Button edit Tour
-    const [banner, setBanner] = useState('');
     const editTour = (record) => {
+        setVisible(false)
         setIsModalOpen(true);
         //API get one Tour
         var axios = require('axios');
@@ -193,11 +196,9 @@ function TourPage() {
 
         axios(config)
             .then(function (response) {
-                console.log(response.data);
+                //console.log(response.data);
                 //Lấy id Tour lưu vào state khi Click
                 setUid(response.data.id);
-                setBanner(response.data.banner)
-                console.log(banner);
                 var res = response.data.types;
                 $.each(res, (i) => {
                     loai = res[i].id;
@@ -252,7 +253,7 @@ function TourPage() {
 
         axios(config)
             .then(function (response) {
-                console.log(response.data);
+                //console.log(response.data);
                 Swal.fire({
                     icon: 'success',
                     title: 'Cập nhật Tour thành công!',
@@ -334,14 +335,52 @@ function TourPage() {
     );
 
     //Image
-    const [image, setImage] = useState('');
+    const [image, setImage] = useState(null);
     const handleImage = (e) => {
-        console.log(e.target.files);
+        //console.log(e.target.files);
         setImage(e.target.files[0])
+        setPreviewImage(URL.createObjectURL(e.target.files[0]))
     }
 
-    const handleApi = () => {
+    const onFinish = (e) => {
+        //console.log(e);
+        var axios = require('axios');
+        const data = new FormData();
+        data.append('image', image);
 
+        var config = {
+            method: 'put',
+            url: 'http://localhost:8080/api/tours/image?id=' + uid1,
+            headers: {
+                "Content-Type": "multipart/form-data",
+                'Authorization': 'Bearer ' + token
+            },
+            data: data
+        };
+
+        axios(config)
+            .then(function (response) {
+                //console.log(response.data);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Cập nhật Banner thành công!',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                setTimeout(function () {
+                    setModal1Open(false)
+                    form.resetFields();
+                }, 1400);
+            })
+            .catch(function (error) {
+                //console.log(error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi...',
+                    text: error.message,
+                })
+                form.resetFields();
+            });
     }
 
     return (
@@ -367,7 +406,12 @@ function TourPage() {
                         <Form.Item
                             label="Tên Tour"
                             name="tourName"
-
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Vui lòng không để trống ô này!',
+                                },
+                            ]}
                         >
                             <Input />
                         </Form.Item>
@@ -375,7 +419,12 @@ function TourPage() {
                         <Form.Item
                             label="Introduce"
                             name="introduce"
-
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Vui lòng không để trống ô này!',
+                                },
+                            ]}
                         >
                             <Input />
                         </Form.Item>
@@ -383,7 +432,12 @@ function TourPage() {
                         <Form.Item
                             label="Rating"
                             name="rating"
-
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Vui lòng không để trống ô này!',
+                                },
+                            ]}
                         >
                             <Input />
                         </Form.Item>
@@ -391,7 +445,12 @@ function TourPage() {
                         <Form.Item
                             label="Tour Plan"
                             name="tourPlan"
-
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Vui lòng không để trống ô này!',
+                                },
+                            ]}
                         >
                             <Input />
                         </Form.Item>
@@ -399,7 +458,12 @@ function TourPage() {
                         <Form.Item
                             label="Phone"
                             name="phone"
-
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Vui lòng không để trống ô này!',
+                                },
+                            ]}
                         >
                             <Input />
                         </Form.Item>
@@ -407,7 +471,12 @@ function TourPage() {
                         <Form.Item
                             label="Tour Place"
                             name="tourPlace"
-
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Vui lòng không để trống ô này!',
+                                },
+                            ]}
                         >
                             <TextArea rows={4} />
                         </Form.Item>
@@ -415,7 +484,12 @@ function TourPage() {
                         <Form.Item
                             label="Type"
                             name="types"
-
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Vui lòng không để trống ô này!',
+                                },
+                            ]}
                         >
                             <Select defaultValue="Vui lòng chọn...">
                                 <Option value="mount">Núi</Option>
@@ -428,7 +502,12 @@ function TourPage() {
                         <Form.Item
                             label="Base Price"
                             name="basePrice"
-
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Vui lòng không để trống ô này!',
+                                },
+                            ]}
                         >
                             <Input maxLength={16} />
                         </Form.Item>
@@ -463,12 +542,7 @@ function TourPage() {
                         <Form.Item
                             label="Tên Tour"
                             name="tourName1"
-                            rules={[
-                                {
-                                    required: false,
-                                    message: 'Vui lòng không để trống ô này!',
-                                },
-                            ]}
+
                         >
                             <Input />
                         </Form.Item>
@@ -476,12 +550,7 @@ function TourPage() {
                         <Form.Item
                             label="Introduce"
                             name="introduce1"
-                            rules={[
-                                {
-                                    required: false,
-                                    message: 'Vui lòng không để trống ô này!',
-                                },
-                            ]}
+
                         >
                             <Input />
                         </Form.Item>
@@ -489,12 +558,7 @@ function TourPage() {
                         <Form.Item
                             label="Rating"
                             name="rating1"
-                            rules={[
-                                {
-                                    required: false,
-                                    message: 'Vui lòng không để trống ô này!',
-                                },
-                            ]}
+
                         >
                             <Input />
                         </Form.Item>
@@ -502,12 +566,7 @@ function TourPage() {
                         <Form.Item
                             label="Tour Plan"
                             name="tourPlan1"
-                            rules={[
-                                {
-                                    required: false,
-                                    message: 'Vui lòng không để trống ô này!',
-                                },
-                            ]}
+
                         >
                             <Input />
                         </Form.Item>
@@ -515,12 +574,7 @@ function TourPage() {
                         <Form.Item
                             label="Phone"
                             name="phone1"
-                            rules={[
-                                {
-                                    required: false,
-                                    message: 'Vui lòng không để trống ô này!',
-                                },
-                            ]}
+
                         >
                             <Input />
                         </Form.Item>
@@ -528,12 +582,7 @@ function TourPage() {
                         <Form.Item
                             label="Tour Place"
                             name="tourPlace1"
-                            rules={[
-                                {
-                                    required: false,
-                                    message: 'Vui lòng không để trống ô này!',
-                                },
-                            ]}
+
                         >
                             <TextArea rows={4} />
                         </Form.Item>
@@ -541,12 +590,7 @@ function TourPage() {
                         <Form.Item
                             label="Type"
                             name="types1"
-                            rules={[
-                                {
-                                    required: false,
-                                    message: 'Vui lòng không để trống ô này!',
-                                },
-                            ]}
+
                         >
                             <Select defaultValue="Vui lòng chọn...">
                                 <Option value="635a0274843f5bf7652e4ebc">Núi</Option>
@@ -559,12 +603,7 @@ function TourPage() {
                         <Form.Item
                             label="Base Price"
                             name="basePrice1"
-                            rules={[
-                                {
-                                    required: false,
-                                    message: 'Vui lòng không để trống ô này!',
-                                },
-                            ]}
+
                         >
                             <Input maxLength={16} />
                         </Form.Item>
@@ -590,20 +629,48 @@ function TourPage() {
                     visible={modal1Open}
                     onOk={() => setModal1Open(false)}
                     onCancel={() => setModal1Open(false)}
+                    footer={null}
                 >
+                    <Form
+                        name="basic"
+                        labelCol={{ span: 8 }}
+                        wrapperCol={{ span: 16 }}
+                        initialValues={{ remember: true }}
+                        form={form}
+                        onFinish={onFinish}
+                        onFinishFailed={onFinishFailed}
+                        autoComplete="off"
+                    >
+                        <h4>Vui lòng chọn ảnh</h4>
+                        <Form.Item
+                            name="image"
+                            style={{ width: '100%' }}
+                        >
+                            <Input type="file" onChange={handleImage} accept="image/*" />
+                        </Form.Item>
 
-                    <input type="file" onChange={handleImage} />
-                    <br />
-                    <br />
-                    <button name="upload" onClick={handleApi}>
-                        Upload
-                    </button>
+                        <h4 style={{ paddingTop: '10px' }}>Banner</h4>
+                        <Image
+                            width={350}
+                            src={previewImage}
+                            defaultValue={previewImage}
+                            style={{ display: 'flex', justifyContent: 'center' }}
+                        />
 
-                    <br />
-                    <Image
-                        width={200}
-                        src={previewImage}
-                    />
+
+                        <br />
+                        <Rule color="#FAF7F0" />
+                        <div style={{ display: 'flex', justifyContent: 'flex-end', paddingTop: '5px' }}>
+                            <Button key="back" onClick={handleCancel} style={{ marginRight: '20px' }}>
+                                Đóng
+                            </Button>
+                            <Button type="primary" htmlType="submit">
+                                Upload
+                            </Button>
+                        </div>
+                    </Form>
+
+
                 </Modal>
                 {/* Hiển thị bảng chứa các Tour */}
                 <Table dataSource={dataSource} loading={loading ? <Spin /> : { indicator: <Spin />, spinning: false }}>

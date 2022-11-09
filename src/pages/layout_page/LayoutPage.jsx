@@ -65,7 +65,6 @@ function LayoutPage() {
     const [collapsed, setCollapsed] = useState(false);
 
     const [itemname, setItemName] = useState('');
-    const [itemname1, setItemName1] = useState('');
 
     return (
         <>
@@ -89,7 +88,7 @@ function LayoutPage() {
                                 setItemName(items.find((elm) => elm.key === key).label);
                                 if(key === '/user')
                                 {
-                                    message.error('Chức năng đang được xây dựng!');
+                                    message.error('Chức năng đang trong quá trình phát triển!');
                                 }
                             }
                         }} />
@@ -100,7 +99,7 @@ function LayoutPage() {
                             <Breadcrumb style={{ margin: '16px 0' }}>
                                 <Breadcrumb.Item>{itemname}</Breadcrumb.Item>
                             </Breadcrumb>
-                            <div className="site-layout-background" style={{ padding: 24, minHeight: 570 }}>
+                            <div className="site-layout-background" style={{ padding: 24, minHeight: 550 }}>
                                 <Routes>
                                     <Route path='/home' element={<HomePage />} />
                                     <Route path='/account' element={<AccountPage />} />

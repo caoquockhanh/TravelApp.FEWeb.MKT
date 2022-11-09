@@ -12,6 +12,8 @@ import {
     Input,
     Select,
     Image,
+    Popconfirm,
+    message,
 } from 'antd';
 import $ from 'jquery';
 import Cookies from 'universal-cookie';
@@ -276,6 +278,7 @@ function TourPage() {
 
     //Modal confim xóa Tour
     const { confirm } = Modal;
+
     const showDeleteConfirm = (record) => {
         confirm({
             title: 'Bạn chắc chắn muốn xóa Tour này chứ?',
@@ -638,7 +641,6 @@ function TourPage() {
                         initialValues={{ remember: true }}
                         form={form}
                         onFinish={onFinish}
-                        onFinishFailed={onFinishFailed}
                         autoComplete="off"
                     >
                         <h4>Vui lòng chọn Banner</h4>

@@ -139,6 +139,7 @@ function TourPage() {
                 setTimeout(function () {
                     setVisible(false)
                     form.resetFields()
+                    window.location.reload();
                 }, 1400);
             })
             .catch(function (error) {
@@ -149,7 +150,7 @@ function TourPage() {
                     text: error.message,
                 })
                 setVisible(true)
-                form.resetFields()
+                //form.resetFields()
             });
     }
 

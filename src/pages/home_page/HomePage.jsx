@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import "./css/homepage.css"
 import { Card, Avatar, message, Image, Modal, Row, Col } from 'antd';
 import { EditOutlined, EyeOutlined, SettingOutlined } from '@ant-design/icons';
+import MissYou from './../../asset/audio/Oliver Tree & Robin Schulz - Miss You [Music Video].mp3';
+import ReactAudioPlayer from 'react-audio-player';
 
 const { Meta } = Card;
 
@@ -10,6 +12,7 @@ function HomePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpen1, setIsModalOpen1] = useState(false);
   const [isModalOpen2, setIsModalOpen2] = useState(false);
+
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -39,6 +42,15 @@ function HomePage() {
       <div className='banner' style={{ display: 'flex', justifyContent: 'center', fontSize: '3vh' }}>
         <h1 style={{ color: '#6C4AB6', paddingBottom: '10px' }}>Admin Web quản lí Tour của nhóm Chrome</h1>
       </div>
+
+      <div style={{display: 'flex', justifyContent: 'flex-end'}}>
+        <ReactAudioPlayer
+          src={MissYou}
+          autoPlay
+          controls
+        />
+      </div>
+
       <h2 style={{ color: '#3F3B6C' }}>Thành viên nhóm gồm: </h2>
       <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
         <Card
@@ -75,7 +87,7 @@ function HomePage() {
           actions={[
             <SettingOutlined key="setting" onClick={error} />,
             <EditOutlined key="edit" onClick={error} />,
-            <EyeOutlined key="ellipsis" onClick={showModal1}/>,
+            <EyeOutlined key="ellipsis" onClick={showModal1} />,
           ]}
         >
           <Meta
@@ -97,7 +109,7 @@ function HomePage() {
           actions={[
             <SettingOutlined key="setting" onClick={error} />,
             <EditOutlined key="edit" onClick={error} />,
-            <EyeOutlined key="ellipsis" onClick={showModal2}/>,
+            <EyeOutlined key="ellipsis" onClick={showModal2} />,
           ]}
         >
           <Meta
@@ -110,7 +122,7 @@ function HomePage() {
 
       {/* Bùi Hữu Thông */}
       <Modal title="Thông tin cá nhân" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-        <div style={{textAlign: 'center', marginLeft: '50px'}}>
+        <div style={{ textAlign: 'center', marginLeft: '50px' }}>
           <Row gutter={16}>
             <Col span={10}>
               <h3>Họ và tên: </h3>
@@ -156,7 +168,7 @@ function HomePage() {
 
       {/* Cao Quốc Khánh */}
       <Modal title="Thông tin cá nhân" open={isModalOpen1} onOk={handleOk} onCancel={handleCancel}>
-        <div style={{textAlign: 'center', marginLeft: '50px'}}>
+        <div style={{ textAlign: 'center', marginLeft: '50px' }}>
           <Row gutter={16}>
             <Col span={10}>
               <h3>Họ và tên: </h3>
@@ -202,7 +214,7 @@ function HomePage() {
 
       {/* Trần Công Minh */}
       <Modal title="Thông tin cá nhân" open={isModalOpen2} onOk={handleOk} onCancel={handleCancel}>
-        <div style={{textAlign: 'center', marginLeft: '50px'}}>
+        <div style={{ textAlign: 'center', marginLeft: '50px' }}>
           <Row gutter={16}>
             <Col span={10}>
               <h3>Họ và tên: </h3>

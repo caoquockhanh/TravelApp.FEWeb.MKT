@@ -61,7 +61,7 @@ function LoginPage(props) {
     return (
 
         <div style={{ width: "30%", margin: "auto", paddingTop: "120px" }}>
-            <img src={require('./../../asset/img/logo_app.png')} style={{marginLeft: "38%", marginTop: '-50px'}}/>
+            <img src={require('./../../asset/img/logo.png')} style={{marginLeft: "38%", marginTop: '-50px'}}/>
             <h1 style={{ marginLeft: "38%", color: "#47B5FF" }}>Travel By Chrome</h1>
             <form onSubmit={handleSubmit}
                 name="basic"

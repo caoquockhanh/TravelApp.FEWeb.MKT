@@ -3,6 +3,7 @@ import {
     DashboardOutlined,
     MenuOutlined,
     ToolOutlined,
+    LineChartOutlined,
 } from '@ant-design/icons'
 import { Breadcrumb, Layout, Menu, message } from 'antd';
 import React, { useState } from 'react';
@@ -13,6 +14,7 @@ import HomePage from '../home_page/HomePage';
 import LogoutPage from '../logout_page/LogOutPage';
 import AccountPage from '../account_page/AccountPage';
 import TourPage from '../tour_page/TourPage';
+import BookTourPage from '../book_tour_page/BookTourPage';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -41,6 +43,12 @@ const items = [
         '/tours',
         <MenuOutlined />,
         'Quản lí tours'
+    ),
+    getItem(
+        'Tours đã Book',
+        '/booktours',
+        <LineChartOutlined />,
+        'Tours đã book'
     ),
     getItem('Tài khoản', 'Tài khoản', <ToolOutlined />, 'Tài khoản', [
         getItem('Thông tin tài khoản', '/account', '', 'Thông tin tài khoản'),
@@ -104,6 +112,7 @@ function LayoutPage() {
                                     <Route path='/home' element={<HomePage />} />
                                     <Route path='/account' element={<AccountPage />} />
                                     <Route path='/tours' element={<TourPage />} />
+                                    <Route path='/booktours' element={<BookTourPage />} />
                                 </Routes>
                                 <Routes>
                                     <Route path='/logout' element={<LogoutPage />} />

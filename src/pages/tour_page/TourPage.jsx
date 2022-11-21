@@ -496,6 +496,7 @@ function TourPage() {
                             ]}
                         >
                             <Select defaultValue="Vui lòng chọn...">
+                                <Option value="recommend">Khuyến nghị</Option>
                                 <Option value="mount">Núi</Option>
                                 <Option value="nature">Thiên nhiên</Option>
                                 <Option value="sea">Biển</Option>
@@ -597,6 +598,7 @@ function TourPage() {
 
                         >
                             <Select defaultValue="Vui lòng chọn...">
+                                <Option value="637776457952f95763843331">Khuyến nghị</Option>
                                 <Option value="635a0274843f5bf7652e4ebc">Núi</Option>
                                 <Option value="635a02a4843f5bf7652e4ebd">Thiên nhiên</Option>
                                 <Option value="635a02b3843f5bf7652e4ebe">Biển</Option>
@@ -690,7 +692,7 @@ function TourPage() {
                         key="action"
                         render={(_, record) => (
                             <Space size="middle">
-                                <Button primary onClick={() => { viewPicture(record) }}>Xem ảnh</Button>
+                                <Button style={{ borderColor: "#8D9EFF", color: '#8D9EFF' }} primary onClick={() => { viewPicture(record) }}>Xem ảnh</Button>
                                 <Button style={{ borderColor: "#FF884B", color: '#FF884B' }} onClick={() => { editTour(record) }}>Sửa</Button>
                                 <Button danger onClick={() => { showDeleteConfirm(record) }}>Xóa</Button>
                             </Space>

@@ -5,13 +5,18 @@ import {
     Tag,
     Spin,
     Button,
-    Modal
+    Modal,
+    Form,
+    Input,
 } from 'antd';
 import Cookies from 'universal-cookie';
 
 const cookies = new Cookies();
 const token = cookies.get('token');
-const url = 'http://localhost:8080/api/bookTour';
+const url = {
+    getAllTour: 'http://localhost:8080/api/bookTour',
+    getOneTour: 'http://localhost:8080/api/bookTour/',
+}
 
 function BookTourPage(props) {
 
@@ -21,11 +26,13 @@ function BookTourPage(props) {
 
     const [modal1Open, setModal1Open] = useState(false);
 
+    const [form] = Form.useForm();
+
     useEffect(() => {
         setLoading(true)
         setTimeout(() => {
             setLoading(false)
-        }, 1000)
+        }, 500)
     }, [])
 
 
@@ -34,7 +41,7 @@ function BookTourPage(props) {
 
     var config = {
         method: 'get',
-        url: url,
+        url: url.getAllTour,
         headers: {
             'accept': '*/*',
             'Authorization': 'Bearer ' + token,
@@ -47,7 +54,7 @@ function BookTourPage(props) {
             var res = response.data;
             setDataSource(response.data);
 
-            let arr = res.map(function (element) {
+            res.map(function (element) {
                 //console.log(element);
                 if (element.isCanceled === true) {
                     element.isCanceled = <Tag color="red">Đã hủy</Tag>;
@@ -89,6 +96,13 @@ function BookTourPage(props) {
         },
     ];
 
+    const handleOk = () => {
+        setModal1Open(false);
+    };
+
+    const handleCancel = () => {
+        setModal1Open(false);
+    };
 
     //View Details (get one bookTour)
     function ViewDetails(record) {
@@ -98,7 +112,7 @@ function BookTourPage(props) {
 
         var config = {
             method: 'get',
-            url: 'http://localhost:8080/api/bookTour/' + record.id,
+            url: url.getOneTour + record.id,
             headers: {
                 'accept': '*/*',
                 'Authorization': 'Bearer ' + token,
@@ -108,19 +122,42 @@ function BookTourPage(props) {
         axios(config)
             .then(function (response) {
                 console.log(response.data);
+
+                form.setFieldsValue({
+                    fullName: response.data.user.fullName,
+                    phone: response.data.user.phoneNumber,
+                    email: response.data.user.email,
+                    tourName: response.data.tour.tourName,
+                    tourPlace: response.data.tour.tourPlace,
+                    introduce: response.data.tour.introduce,
+                    child: response.data.child,
+                    adult: response.data.adult,
+                    totalPrice: response.data.totalPrice,
+                });
             })
             .catch(function (error) {
                 console.log(error);
             });
     }
 
-    const handleOk = () => {
-        setModal1Open(false);
+    // Căn layout input Modal
+    const layout = {
+        labelCol: {
+            span: 4,
+        },
+        wrapperCol: {
+            span: 20,
+        },
     };
 
-    const handleCancel = () => {
-        setModal1Open(false);
-    };
+    const Rule = ({ color }) => (
+        <hr
+            style={{
+                borderColor: color,
+            }}
+        />
+    );
+
     return (
         <>
             {/* Bảng book Tour */}
@@ -129,17 +166,99 @@ function BookTourPage(props) {
 
             {/* Modal xem chi tiết */}
             <Modal
-                title="20px to Top"
+                title="Thông tin chi tiết"
                 style={{
-                    top: 20,
+                    top: 5,
                 }}
-                visible={modal1Open}
                 onOk={handleOk}
                 onCancel={handleCancel}
+                footer={null}
+                open={modal1Open}
             >
-                <p>some contents...</p>
-                <p>some contents...</p>
-                <p>some contents...</p>
+                <Form {...layout}
+                    name="basic"
+                    form={form}
+                    initialValues={{ remember: true }}
+                    autoComplete="off"
+                >
+                    <h3>Thông tin người dùng</h3>
+                    <Form.Item
+                        label="Họ tên"
+                        name="fullName"
+                    >
+                        <Input disabled={true} style={{ color: 'black' }} />
+                    </Form.Item>
+
+                    <Form.Item
+                        label="Phone"
+                        name="phone"
+                    >
+                        <Input disabled={true} style={{ color: 'black' }} />
+                    </Form.Item>
+
+                    <Form.Item
+                        label="Email"
+                        name="email"
+                    >
+                        <Input disabled={true} style={{ color: 'black' }} />
+                    </Form.Item>
+                    <h3>Thông tin Tour</h3>
+                    <Form.Item
+                        label="Tên tour"
+                        name="tourName"
+                    >
+                        <Input disabled={true} style={{ color: 'black' }} />
+                    </Form.Item>
+
+                    <Form.Item
+                        label="Địa điểm"
+                        name="tourPlace"
+                    >
+                        <Input disabled={true} style={{ color: 'black' }} />
+                    </Form.Item>
+
+                    <Form.Item
+                        label="Thời gian"
+                        name="timePicker"
+                    >
+                        <Input defaultValue={'Thứ 2 - Thứ 7 • 08:15 - 16:30'} disabled={true} style={{ color: 'black' }} />
+                    </Form.Item>
+
+                    <Form.Item
+                        label="Thông tin"
+                        name="introduce"
+                    >
+                        <Input disabled={true} style={{ color: 'black' }} />
+                    </Form.Item>
+
+                    <Form.Item
+                        label="Trẻ em"
+                        name="child"
+                    >
+                        <Input disabled={true} style={{ color: 'black' }} />
+                    </Form.Item>
+
+                    <Form.Item
+                        label="Người lớn"
+                        name="adult"
+                    >
+                        <Input disabled={true} style={{ color: 'black' }} />
+                    </Form.Item>
+
+                    <Form.Item
+                        label="Tổng tiền"
+                        name="totalPrice"
+                    >
+                        <Input disabled={true} style={{ color: 'black' }} />
+                    </Form.Item>
+                    <Rule color="#FAF7F0" />
+                    {/* Button */}
+                    <div style={{ display: 'flex', justifyContent: 'center', paddingTop: '5px' }}>
+                        <Button key="submit" type="primary" htmlType="submit" onClick={handleOk} style={{ width: '120px', height: '45px', borderRadius: '10px', backgroundColor: "#C539B4", borderColor: "#C539B4", color: '#EFF5F5' }}>
+                            Xác nhận
+                        </Button>
+                    </div>
+                </Form>
             </Modal>
         </>
     );

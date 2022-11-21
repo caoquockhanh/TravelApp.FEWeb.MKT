@@ -8,9 +8,10 @@ import {
     Modal,
     Form,
     Input,
+    InputNumber,
 } from 'antd';
 import Cookies from 'universal-cookie';
-
+import { NumericFormat } from 'react-number-format';
 const cookies = new Cookies();
 const token = cookies.get('token');
 const url = {
@@ -129,7 +130,6 @@ function BookTourPage(props) {
                     email: response.data.user.email,
                     tourName: response.data.tour.tourName,
                     tourPlace: response.data.tour.tourPlace,
-                    introduce: response.data.tour.introduce,
                     child: response.data.child,
                     adult: response.data.adult,
                     totalPrice: response.data.totalPrice,
@@ -157,6 +157,10 @@ function BookTourPage(props) {
             }}
         />
     );
+
+    function onChange(value) {
+        console.log('changed', value);
+    }
 
     return (
         <>
@@ -224,12 +228,7 @@ function BookTourPage(props) {
                         <Input defaultValue={'Thứ 2 - Thứ 7 • 08:15 - 16:30'} disabled={true} style={{ color: 'black' }} />
                     </Form.Item>
 
-                    <Form.Item
-                        label="Thông tin"
-                        name="introduce"
-                    >
-                        <Input disabled={true} style={{ color: 'black' }} />
-                    </Form.Item>
+                    <h3>Thông tin đặt Tour</h3>
 
                     <Form.Item
                         label="Trẻ em"
@@ -249,7 +248,14 @@ function BookTourPage(props) {
                         label="Tổng tiền"
                         name="totalPrice"
                     >
-                        <Input disabled={true} style={{ color: 'black' }} />
+                        <InputNumber
+                            defaultValue={1000}
+                            formatter={value => `${value} VNĐ`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                            parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                            onChange={onChange}
+                            disabled={true}
+                            style={{width: '100%', color: 'black'}}
+                        />
                     </Form.Item>
                     <Rule color="#FAF7F0" />
                     {/* Button */}

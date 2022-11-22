@@ -12,8 +12,6 @@ import {
     Input,
     Select,
     Image,
-    Popconfirm,
-    message,
 } from 'antd';
 import $ from 'jquery';
 import Cookies from 'universal-cookie';
@@ -408,7 +406,7 @@ function TourPage() {
                         autoComplete="off"
                     >
                         <Form.Item
-                            label="Tên Tour"
+                            label="Tour Name"
                             name="tourName"
                             rules={[
                                 {
@@ -685,7 +683,9 @@ function TourPage() {
                     <Column title="Tour Plan" dataIndex="tourPlan" key="tourPlan" />
                     <Column title="Phone" dataIndex="phone" key="phone" />
                     <Column title="Tour Place" dataIndex="tourPlace" key="tourPlace" />
-                    <Column title="Base Price" dataIndex="basePrice" key="basePrice" />
+                    <Column title="Base Price" dataIndex="basePrice" key="basePrice" render={(value) => {
+                        return value.toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
+                    }} />
 
                     <Column
                         title="Action"

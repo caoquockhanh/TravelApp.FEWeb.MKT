@@ -1,6 +1,6 @@
 import {
-    BlockOutlined,
-    DashboardOutlined,
+    UserOutlined,
+    HomeOutlined,
     MenuOutlined,
     ToolOutlined,
     LineChartOutlined,
@@ -34,10 +34,10 @@ const items = [
     getItem(
         'Trang chủ',
         '/home',
-        <DashboardOutlined />,
+        <HomeOutlined />,
         'Trang chủ',
     ),
-    getItem('Quản lí người dùng', '/user', <BlockOutlined />, 'Quản lí người dùng'),
+    getItem('Quản lí người dùng', '/user', <UserOutlined />, 'Quản lí người dùng'),
     getItem(
         'Quản lí tours',
         '/tours',
@@ -57,13 +57,14 @@ const items = [
 ];
 
 function LayoutPage() {
+
     const location = useLocation();
-    if (location.pathname === "/login") {
-        console.log(location.pathname + "|true");
-    }
-    else {
-        console.log(location.pathname + "|false");
-    }
+    // if (location.pathname === "/login") {
+    //     console.log(location.pathname + "|true");
+    // }
+    // else {
+    //     console.log(location.pathname + "|false");
+    // }
     // if(location.pathname === "/account"){
     //     console.log('Tài khoản');
     // }

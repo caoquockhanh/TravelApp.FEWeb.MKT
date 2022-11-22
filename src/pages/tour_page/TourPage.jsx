@@ -41,7 +41,7 @@ function TourPage() {
     var axios = require('axios');
     var config = {
         method: 'get',
-        url: 'http://localhost:8080/api/tours',
+        url: 'http://172.16.65.12:8080/api/tours',
         headers: {
             'Authorization': 'Bearer ' + token,
         }
@@ -116,7 +116,7 @@ function TourPage() {
 
         var config = {
             method: 'post',
-            url: 'http://localhost:8080/api/tours',
+            url: 'http://172.16.65.12:8080/api/tours',
             headers: {
                 'accept': '*/*',
                 'Authorization': 'Bearer ' + token,
@@ -158,11 +158,11 @@ function TourPage() {
         //console.log(record.id);
         setUid1(record.id)
         setModal1Open(true)
-        setPreviewImage('http://localhost:8080/api/tours/image?id=' + record.id)
+        setPreviewImage('http://172.16.65.12:8080/api/tours/image?id=' + record.id)
         //
         var config = {
             method: 'get',
-            url: 'http://localhost:8080/api/tours/image?id=' + record.id,
+            url: 'http://172.16.65.12:8080/api/tours/image?id=' + record.id,
             headers: {
                 'accept': 'image/jpeg',
                 'Authorization': 'Bearer ' + token,
@@ -188,7 +188,7 @@ function TourPage() {
         var loai;
         var config = {
             method: 'get',
-            url: 'http://localhost:8080/api/tours/' + record.id,
+            url: 'http://172.16.65.12:8080/api/tours/' + record.id,
             headers: {
                 'accept': '*/*',
                 'Authorization': 'Bearer ' + token,
@@ -243,7 +243,7 @@ function TourPage() {
 
         var config = {
             method: 'put',
-            url: 'http://localhost:8080/api/tours/' + uid,
+            url: 'http://172.16.65.12:8080/api/tours/' + uid,
             headers: {
                 'accept': '*/*',
                 'Authorization': 'Bearer ' + token,
@@ -291,7 +291,7 @@ function TourPage() {
                 var axios = require('axios');
                 var config = {
                     method: 'delete',
-                    url: 'http://localhost:8080/api/tours/' + record.id,
+                    url: 'http://172.16.65.12:8080/api/tours/' + record.id,
                     headers: {
                         'accept': '*/*',
                         'Authorization': 'Bearer ' + token,
@@ -352,7 +352,7 @@ function TourPage() {
 
         var config = {
             method: 'put',
-            url: 'http://localhost:8080/api/tours/image?id=' + uid1,
+            url: 'http://172.16.65.12:8080/api/tours/image?id=' + uid1,
             headers: {
                 "Content-Type": "multipart/form-data",
                 'Authorization': 'Bearer ' + token

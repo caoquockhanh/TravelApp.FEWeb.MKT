@@ -2,6 +2,11 @@ import React from "react";
 import { useNavigate } from 'react-router-dom'
 import Cookies from 'universal-cookie'
 
+const url = {
+    local: 'http://localhost:8080/api/auth/logout',
+    ip: 'http://172.16.65.12:8080/api/auth/logout',
+}
+
 function LogoutPage(props) {
 
     const navigate = useNavigate();
@@ -14,7 +19,7 @@ function LogoutPage(props) {
 
     var config = {
         method: 'post',
-        url: 'http://localhost:8080/api/auth/logout',
+        url: url.ip,
         headers: {}
     };
 

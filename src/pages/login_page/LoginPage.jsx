@@ -4,6 +4,11 @@ import Cookies from 'universal-cookie';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'
 
+
+const url = {
+    local: `http://localhost:8080/api/auth/signin`,
+    ip: 'http://172.16.65.12:8080/api/auth/signin'
+}
 function LoginPage(props) {
 
     const [username, setUserName] = useState('');
@@ -23,7 +28,7 @@ function LoginPage(props) {
         e.preventDefault();
         var config = {
             method: 'post',
-            url: `http://localhost:8080/api/auth/signin`,
+            url: url.ip,
             headers: {
                 'Content-Type': 'application/json'
             },

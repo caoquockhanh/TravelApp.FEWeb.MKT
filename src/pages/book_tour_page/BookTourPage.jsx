@@ -16,6 +16,8 @@ const token = cookies.get('token');
 const url = {
     getAllTour: 'http://localhost:8080/api/bookTour',
     getOneTour: 'http://localhost:8080/api/bookTour/',
+    ipGetAll: 'http://172.16.65.12:8080/api/bookTour',
+    ipGetOne: 'http://172.16.65.12:8080/api/bookTour/'
 }
 
 function BookTourPage(props) {
@@ -41,7 +43,7 @@ function BookTourPage(props) {
 
     var config = {
         method: 'get',
-        url: url.getAllTour,
+        url: url.ipGetAll,
         headers: {
             'accept': '*/*',
             'Authorization': 'Bearer ' + token,
@@ -112,7 +114,7 @@ function BookTourPage(props) {
 
         var config = {
             method: 'get',
-            url: url.getOneTour + record.id,
+            url: url.ipGetOne + record.id,
             headers: {
                 'accept': '*/*',
                 'Authorization': 'Bearer ' + token,

@@ -41,7 +41,7 @@ function AccountPage() {
 
     var config = {
         method: 'get',
-        url: 'http://localhost:8080/api/user/my',
+        url: 'http://172.16.65.12:8080/api/user/my',
         headers: {
             'Authorization': 'Bearer ' + token,
         }
@@ -87,7 +87,7 @@ function AccountPage() {
 
         var config = {
             method: 'put',
-            url: 'http://localhost:8080/api/user/my',
+            url: 'http://172.16.65.12:8080/api/user/my',
             headers: {
                 'accept': '*/*',
                 'Authorization': 'Bearer ' + token,
@@ -119,7 +119,7 @@ function AccountPage() {
 
         var config = {
             method: 'put',
-            url: 'http://localhost:8080/api/user/password',
+            url: 'http://172.16.65.12:8080/api/user/password',
             headers: {
                 'accept': '*/*',
                 'Authorization': 'Bearer ' + token,
